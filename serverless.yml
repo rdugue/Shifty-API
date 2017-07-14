@@ -1,0 +1,174 @@
+service: shifty-api # NOTE: update this with your service name
+
+# frameworkVersion: "=X.X.X"
+package:
+  artifact: ShiftyPackage.zip
+  exclude:
+    - bin/**
+    - /.vscode/**
+    - include/**
+    - lib/**
+  include:
+    - lib/python3.5/site-packages/**
+    - utils/**
+
+provider:
+  name: aws
+  runtime: python3.6
+  environment:
+    SHIFT_TABLE: Shifts
+    USER_TABLE: Users
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.SHIFT_TABLE}"
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}"
+
+# you can overwrite defaults here
+#  stage: dev
+#  region: us-east-1
+
+functions:
+  hello:
+    handler: login.handler
+    events:
+      - http:
+          path: login
+          method: post
+          cors: true
+
+  register:
+    handler: register.handler
+    events:
+      - http:
+          path: register
+          method: post
+          cors: true
+
+  authorizerFunc:
+    handler: authorizer.handler 
+
+  create:
+    handler: /shifts/create.handler
+    events:
+      - http:
+          path: /api/shifts
+          method: post
+          cors: true
+          authorizer:
+            name: authorizerFunc
+            identitySource: method.request.header.Authorization
+  
+  delete:
+    handler: /shifts/delete.handler
+    events:
+      - http:
+          path: /api/shifts/{id}
+          method: delete
+          cors: true
+          authorizer:
+            name: authorizerFunc
+            identitySource: method.request.header.Authorization
+
+  update:
+    handler: /shifts/update.handler
+    events:
+      - http:
+          path: /api/shifts/{id}
+          method: put
+          cors: true
+          authorizer:
+            name: authorizerFunc
+
+  get_all:
+    handler: /shifts/get_all.handler
+    events:
+      - http:
+          path: /api/shifts/all/{company}
+          method: get
+          cors: true
+          authorizer:
+            name: authorizerFunc
+            identitySource: method.request.header.Authorization
+
+  get_trades:
+    handler: /trades/get_all.handler
+    events:
+      - http:
+          path: /api/trades/all/{company}
+          method: get
+          cors: true
+          authorizer:
+            name: authorizerFunc
+            identitySource: method.request.header.Authorization
+
+  get_day:
+    handler: /shifts/get_day.handler
+    events:
+      - http:
+          path: /api/shifts/all/{company}/{day}
+          method: get
+          cors: true
+          authorizer:
+            name: authorizerFunc
+            identitySource: method.request.header.Authorization
+
+  get_trades_day:
+    handler: /trades/get_day.handler
+    events:
+      - http:
+          path: /api/trades/all/{company}/{day}
+          method: get
+          cors: true
+          authorizer:
+            name: authorizerFunc
+            identitySource: method.request.header.Authorization
+
+resources:
+  Resources:
+    ShiftsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 10
+          WriteCapacityUnits: 10
+        TableName: ${self:provider.environment.SHIFT_TABLE}
+    UserDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: userId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 10
+          WriteCapacityUnits: 10
+        TableName: ${self:provider.environment.USER_TABLE}
