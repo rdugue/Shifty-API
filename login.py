@@ -16,7 +16,7 @@ def handler(event, context):
         payload = json.loads(event['body'])
     else:
         return respond({'error': 'no POST body'})
-    response = get_user(payload)
+    response = get_user(payload['userId'])
     if 'Item' in response:
         user = response['Item']
         if pbkdf2_sha256.verify(payload['password'], user['password']):
