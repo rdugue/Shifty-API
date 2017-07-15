@@ -63,7 +63,7 @@ functions:
     handler: authorizer.handler 
 
   user:
-    handler: /users/user.handler
+    handler: users/get.handler
     events:
       - http:
           path: /api/users/{userId}
@@ -74,7 +74,7 @@ functions:
             identitySource: method.request.header.Authorization
 
   create:
-    handler: /shifts/create.handler
+    handler: shifts/create.handler
     events:
       - http:
           path: /api/shifts
@@ -85,7 +85,7 @@ functions:
             identitySource: method.request.header.Authorization
   
   delete:
-    handler: /shifts/delete.handler
+    handler: shifts/delete.handler
     events:
       - http:
           path: /api/shifts/{id}
@@ -96,7 +96,7 @@ functions:
             identitySource: method.request.header.Authorization
 
   update:
-    handler: /shifts/update.handler
+    handler: shifts/update.handler
     events:
       - http:
           path: /api/shifts/{id}
@@ -106,7 +106,7 @@ functions:
             name: authorizerFunc
 
   get_all:
-    handler: /shifts/get_all.handler
+    handler: shifts/get_all.handler
     events:
       - http:
           path: /api/shifts/all/{company}
@@ -117,7 +117,7 @@ functions:
             identitySource: method.request.header.Authorization
 
   get_trades:
-    handler: /trades/get_all.handler
+    handler: trades/get_all.handler
     events:
       - http:
           path: /api/trades/all/{company}
@@ -128,7 +128,7 @@ functions:
             identitySource: method.request.header.Authorization
 
   get_day:
-    handler: /shifts/get_day.handler
+    handler: shifts/get_day.handler
     events:
       - http:
           path: /api/shifts/all/{company}/{day}
@@ -139,7 +139,7 @@ functions:
             identitySource: method.request.header.Authorization
 
   get_trades_day:
-    handler: /trades/get_day.handler
+    handler: trades/get_day.handler
     events:
       - http:
           path: /api/trades/all/{company}/{day}
