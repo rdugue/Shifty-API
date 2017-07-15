@@ -5,8 +5,8 @@ from utils import respond, get_all_trades
 def handler(event, context):
     print("Received api request: " + json.dumps(event, indent=2))
 
-    if event['queryStringParameters']:
-        params = event['queryStringParameters']
+    if event['pathParameters']:
+        params = event['pathParameters']
     else:
         params = {}
     if 'company' in params:

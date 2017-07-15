@@ -62,6 +62,17 @@ functions:
   authorizerFunc:
     handler: authorizer.handler 
 
+  user:
+    handler: /users/user.handler
+    events:
+      - http:
+          path: /api/users/{userId}
+          method: get
+          cors: true
+          authorizer:
+            name: authorizerFunc
+            identitySource: method.request.header.Authorization
+
   create:
     handler: /shifts/create.handler
     events:

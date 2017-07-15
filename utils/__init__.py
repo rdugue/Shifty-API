@@ -19,12 +19,12 @@ def respond(err, res=None):
         },
     }
 
-def get_user(user):
+def get_user(userId):
     try:
         table = dynamo.Table('Users')
         response = table.get_item(
             Key={
-                'userId': user['userId']
+                'userId': userId
             }
         )
     except ClientError as e:
