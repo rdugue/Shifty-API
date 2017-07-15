@@ -1,5 +1,6 @@
 from __future__ import print_function
 import json
+from uuid import uuid4
 from utils import respond, create
 
 def handler(event, context):
@@ -7,6 +8,7 @@ def handler(event, context):
 
     payload = json.loads(event['body'])
     if payload:
+        payload['id'] = uuid4()
         response = create(payload, 'Shifts')
         if 'error' in response:
             return respond(response)

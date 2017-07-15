@@ -11,7 +11,7 @@ dynamo = boto3.resource('dynamodb')
 def respond(err, res=None):
     return {
         'statusCode': 400 if err else 200,
-        'body': json.dumps(err) if err else json.dumps(res),
+        'body': json.dumps(err or res),
         'headers': {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Credentials': True,
