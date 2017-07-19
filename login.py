@@ -26,7 +26,7 @@ def handler(event, context):
                 'company': user['company'],
                 'exp': datetime.utcnow() + timedelta(seconds=JWT_EXP_DELTA_SECONDS)
             }
-            jwt_token = jwt.encode(jwt_payload, JWT_SECRET, JWT_ALGORITHM)
+            jwt_token = jwt.encode(jwt_payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
             return respond(None, {
                 'token': jwt_token.decode(),
                 'data': user

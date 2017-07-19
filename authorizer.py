@@ -17,8 +17,10 @@ def handler(event, context):
         try:
             jwt_payload = jwt.decode(jwt_token, JWT_SECRET,
                                      algorithms=[JWT_ALGORITHM])
-        except (jwt.DecodeError, jwt.ExpiredSignatureError):
-            raise Exception('Unauthorized')
+        except jwt.DecodeError:
+            raise Exception('Unauthorized: Decode error')
+        except jwt.ExpiredSignatureError:
+            raise Exception('Unauthorized: Expired signature error')
         else:
             response = get_user(
                 {
