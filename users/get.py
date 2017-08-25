@@ -10,7 +10,7 @@ def handler(event, context):
     else:
         params = {}
     if 'userId' in params:
-        response = get_user(params['userId'])
+        response = get_user(params['userId'], params['company'])
         if 'Item' in response:
             return respond(None, {'data': response['Item']})
         else:
