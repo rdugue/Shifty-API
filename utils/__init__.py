@@ -34,9 +34,9 @@ def get_user(userId, company):
     else:
         return response
 
-def create(item, table):
+def create(item):
     try:
-        table = dynamo.Table('Users')
+        table = dynamo.Table('Shifts')
         response = table.put_item(
             Item=item,
             ReturnValues='ALL_OLD'
