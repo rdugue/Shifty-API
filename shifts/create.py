@@ -9,7 +9,7 @@ def handler(event, context):
     payload = json.loads(event['body'])
     if payload:
         payload['id'] = uuid4()
-        response = create(payload, 'Shifts')
+        response = create(payload)
         if 'error' in response:
             return respond(response)
         else:
