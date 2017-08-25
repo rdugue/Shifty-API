@@ -43,25 +43,6 @@ provider:
 #  region: us-east-1
 
 functions:
-  hello:
-    handler: login.handler
-    events:
-      - http:
-          path: login
-          method: post
-          cors: true
-
-  register:
-    handler: register.handler
-    events:
-      - http:
-          path: register
-          method: post
-          cors: true
-
-  authorizerFunc:
-    handler: authorizer.handler 
-
   user:
     handler: users/get.handler
     events:
@@ -69,9 +50,6 @@ functions:
           path: /api/users/{userId}
           method: get
           cors: true
-          authorizer:
-            name: authorizerFunc
-            identitySource: method.request.header.Authorization
 
   create:
     handler: shifts/create.handler
@@ -80,9 +58,6 @@ functions:
           path: /api/shifts
           method: post
           cors: true
-          authorizer:
-            name: authorizerFunc
-            identitySource: method.request.header.Authorization
   
   delete:
     handler: shifts/delete.handler
@@ -91,9 +66,6 @@ functions:
           path: /api/shifts/{id}
           method: delete
           cors: true
-          authorizer:
-            name: authorizerFunc
-            identitySource: method.request.header.Authorization
 
   update:
     handler: shifts/update.handler
@@ -102,8 +74,6 @@ functions:
           path: /api/shifts/{id}
           method: put
           cors: true
-          authorizer:
-            name: authorizerFunc
 
   get_all:
     handler: shifts/get_all.handler
@@ -112,9 +82,6 @@ functions:
           path: /api/shifts/all/{company}
           method: get
           cors: true
-          authorizer:
-            name: authorizerFunc
-            identitySource: method.request.header.Authorization
 
   get_trades:
     handler: trades/get_all.handler
@@ -123,9 +90,6 @@ functions:
           path: /api/trades/all/{company}
           method: get
           cors: true
-          authorizer:
-            name: authorizerFunc
-            identitySource: method.request.header.Authorization
 
   get_day:
     handler: shifts/get_day.handler
@@ -134,9 +98,6 @@ functions:
           path: /api/shifts/all/{company}/{day}
           method: get
           cors: true
-          authorizer:
-            name: authorizerFunc
-            identitySource: method.request.header.Authorization
 
   get_trades_day:
     handler: trades/get_day.handler
@@ -145,9 +106,6 @@ functions:
           path: /api/trades/all/{company}/{day}
           method: get
           cors: true
-          authorizer:
-            name: authorizerFunc
-            identitySource: method.request.header.Authorization
 
 resources:
   Resources:
