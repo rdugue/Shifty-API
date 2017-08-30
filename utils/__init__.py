@@ -21,7 +21,7 @@ def respond(err, res=None):
 
 def get_user(userId, company):
     try:
-        table = dynamo.Table('Users')
+        table = dynamo.Table('User')
         response = table.get_item(
             Key={
                 'userId': userId,
