@@ -2,7 +2,6 @@ service: shifty-api # NOTE: update this with your service name
 
 # frameworkVersion: "=X.X.X"
 package:
-  artifact: ShiftyPackage.zip
   exclude:
     - bin/**
     - /.vscode/**
@@ -11,13 +10,16 @@ package:
   include:
     - lib/python3.5/site-packages/**
     - utils/**
+    - shiffts/**
+    - trades/**
+    - users/**
 
 provider:
   name: aws
   runtime: python3.6
   environment:
     SHIFT_TABLE: Shifts
-    USER_TABLE: Users
+    USER_TABLE: User
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -47,7 +49,7 @@ functions:
     handler: users/get.handler
     events:
       - http:
-          path: /api/users/{userId}
+          path: /api/users/{userId}/{company}
           method: get
           cors: true
 
@@ -133,11 +135,17 @@ resources:
           -
             AttributeName: userId
             AttributeType: S
+          -
+            AttributeName: company
+            AttributeType: S
         KeySchema:
           -
             AttributeName: userId
             KeyType: HASH
+          -
+            AttributeName: company
+            KeyType: RANGE
         ProvisionedThroughput:
-          ReadCapacityUnits: 10
-          WriteCapacityUnits: 10
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
         TableName: ${self:provider.environment.USER_TABLE}
