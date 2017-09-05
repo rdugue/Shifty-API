@@ -9,10 +9,11 @@ def handler(event, context):
     payload = json.loads(event['body'])
     if payload:
         payload['id'] = uuid4()
+        payload['tradeable'] = False
         response = create(payload)
         if 'error' in response:
             return respond(response)
         else:
-            return respond(None, {'data': response['Attributes']})
+            return respond(None, {'data': payload})
     else:
         return respond({'error': 'No request body'})

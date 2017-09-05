@@ -58,16 +58,16 @@ def update_shift(shift):
             ExpressionAttributeNames={
                 '#c': 'company',
                 '#e': 'employee',
-                '#s': 'start',
-                '#et': 'end',
+                '#s': 'start_time',
+                '#et': 'end_time',
                 '#d': 'day',
                 '#t': 'tradeable'
             },
             ExpressionAttributeValues={
                 ':c': shift['company'],
                 ':e': shift['employee'],
-                ':s': shift['start'],
-                ':et': shift['end'],
+                ':s': shift['start_time'],
+                ':et': shift['end_time'],
                 ':d': shift['day'],
                 ':t': shift['tradeable']
             },
