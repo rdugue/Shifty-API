@@ -8,7 +8,7 @@ def handler(event, context):
 
     payload = json.loads(event['body'])
     if payload:
-        payload['id'] = uuid4()
+        payload['id'] = str(uuid4())
         payload['tradeable'] = False
         response = create(payload)
         if 'error' in response:
