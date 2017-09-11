@@ -19,6 +19,19 @@ def respond(err, res=None):
         },
     }
 
+def create_user(user):
+    try:
+        table = dynamo.Table('User')
+        response = table.put_item(
+            Item=user,
+            ReturnValues='ALL_OLD'
+        )
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+        return {'error': e.response['Error']['Message']}
+    else:
+        return response
+
 def get_user(userId, company):
     try:
         table = dynamo.Table('User')
@@ -46,6 +59,21 @@ def create(item):
         return {'error': e.response['Error']['Message']}
     else:
         return response
+
+def create_batch(items, table):
+    try:
+        table = dynamo.Table(table)
+        with table.batch_writer() as batch:
+            for item in items:
+                batch.put_item(
+                    Item=item,
+                    ReturnValues='ALL_OLD'
+                )
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+        return {'error': e.response['Error']['Message']}
+    else:
+        return {'data': items}
 
 def update_shift(shift):
     try:
