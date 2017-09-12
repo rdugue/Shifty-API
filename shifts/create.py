@@ -6,8 +6,8 @@ from utils import respond, create, create_batch
 def handler(event, context):
     print("Received api request: " + json.dumps(event, indent=2))
 
-    payload = json.loads(event['body'])
-    if payload:
+    if event['body']:
+        payload = json.loads(event['body'])
         if type(payload) is list:
             shifts = []
             for shift in payload:

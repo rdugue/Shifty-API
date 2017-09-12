@@ -65,10 +65,7 @@ def create_batch(items, table):
         table = dynamo.Table(table)
         with table.batch_writer() as batch:
             for item in items:
-                batch.put_item(
-                    Item=item,
-                    ReturnValues='ALL_OLD'
-                )
+                batch.put_item(Item=item)
     except ClientError as e:
         print(e.response['Error']['Message'])
         return {'error': e.response['Error']['Message']}
