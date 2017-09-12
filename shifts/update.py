@@ -5,8 +5,8 @@ from utils import respond, update_shift
 def handler(event, context):
     print("Received api request: " + json.dumps(event, indent=2))
 
-    payload = json.loads(event['body'])
-    if payload:
+    if event['body']:
+        payload = json.loads(event['body'])
         response = update_shift(payload)
         if 'error' in response:
             return respond(response)
