@@ -21,6 +21,7 @@ var/
 
 # Workspace
 /.vscode/
+/.idea/
 *.json
 *.zip
 bin/
